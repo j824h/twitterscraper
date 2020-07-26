@@ -103,6 +103,9 @@ def main():
                             "Must be a valid value from https://docs.python.org/2/library/logging.html#logging-levels. \n"
                             "Default log level is set to INFO.")
         parser.add_argument("-dp", "--disableproxy", action="store_true", default=False, help="Set this flag if you want to disable use of proxy servers when scrapping tweets and user profiles. \n")
+        parser.add_argument("--profileslocale", type=str, default=None,
+                            help="Set this flag if you want to scrape profile info in a specific locale. \n"
+                            "Available locales are visible in Twitter HTML head.")
         args = parser.parse_args()
 
         logging.basicConfig()
@@ -151,7 +154,7 @@ def main():
                         json.dump(tweets, output, cls=JSONEncoder)
             if args.profiles and tweets:
                 list_users = list(set([tweet.screen_name for tweet in tweets]))
-                list_users_info = [query_user_info(elem, not args.disableproxy) for elem in list_users]
+                list_users_info = [query_user_info(elem, args.profileslocale, not args.disableproxy) for elem in list_users]
                 filename = 'userprofiles_' + args.output
                 with open(filename, "w", encoding="utf-8") as output:
                     json.dump(list_users_info, output, cls=JSONEncoder)
