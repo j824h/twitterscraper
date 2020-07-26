@@ -342,5 +342,5 @@ def query_user_info(user, use_proxy=True):
     except BaseException:
         logger.exception("An unknown error occurred! Returning user information gathered so far...")
 
-    logger.info("Got user information from username {}".format(user))
+    logger.info("Got user information of user @{}"".format(user))
     return user_info
