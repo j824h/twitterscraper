@@ -334,7 +334,7 @@ def query_user_info(user, use_proxy=True):
     try:
         user_info = query_user_page(INIT_URL_USER.format(u=user), use_proxy=use_proxy)
         if user_info:
-            logger.info("Got user information from username {}".format(user))
+            logger.info("Got user information of user @{}".format(user))
             return user_info
 
     except KeyboardInterrupt:
