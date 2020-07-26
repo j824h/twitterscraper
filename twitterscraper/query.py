@@ -36,7 +36,7 @@ INIT_URL = 'https://twitter.com/search?f=tweets&vertical=default&q={q}&l={lang}'
 RELOAD_URL = 'https://twitter.com/i/search/timeline?f=tweets&vertical=' \
              'default&include_available_features=1&include_entities=1&' \
              'reset_error_state=false&src=typd&max_position={pos}&q={q}&l={lang}'
-INIT_URL_USER = 'https://twitter.com/{u}'
+INIT_URL_USER = 'https://twitter.com/{u}?lang={locale}'
 RELOAD_URL_USER = 'https://twitter.com/i/profiles/show/{u}/timeline/tweets?' \
                   'include_available_features=1&include_entities=1&' \
                   'max_position={pos}&reset_error_state=false'
@@ -57,7 +57,7 @@ def get_proxies():
 def get_query_url(query, lang, pos, from_user = False):
     if from_user:
         if pos is None:
-            return INIT_URL_USER.format(u=query)
+            return INIT_URL_USER.format(u=query, locale='')
         else:
             return RELOAD_URL_USER.format(u=query, pos=pos)
     if pos is None:
@@ -323,7 +323,7 @@ def query_user_page(url, retry=10, timeout=60, use_proxy=True):
     return None
 
 
-def query_user_info(user, use_proxy=True):
+def query_user_info(user, locale='', use_proxy=True):
     """
     Returns the scraped user data from a twitter user page.
 
@@ -332,7 +332,7 @@ def query_user_info(user, use_proxy=True):
 
 
     try:
-        user_info = query_user_page(INIT_URL_USER.format(u=user), use_proxy=use_proxy)
+        user_info = query_user_page(INIT_URL_USER.format(u=user, locale=locale), use_proxy=use_proxy)
         if user_info:
             logger.info("Got user information of user @{}".format(user))
             return user_info
